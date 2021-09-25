@@ -15,8 +15,10 @@
 }
 
 .load div {
+    font-size: 24px;
+    font-weight: bold;
     position: absolute;
-    width: 20px;
+    width: 25px;
     height: 36px;
     opacity: 0;
     font-family: Helvetica, Arial, sans-serif;

@@ -1,0 +1,8 @@
+export const CITY_WEATHER_INFO = "CITY_WEATHER_INFO"
+export const UPDATE_CITY_WEATHER = "UPDATE_CITY_WEATHER"
+export const LIST_OF_CITIES = "LIST_OF_CITIES"
+export const ERROR = "ERROR"
+
+
+
+
