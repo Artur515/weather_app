@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import {useDebounce} from "../../hooks/useDebounce/useDebounce";
 import {getCityWeather} from "../../api";
+import {Link} from "react-router-dom";
+import {WEATHER_LIST} from "../../utils/constants";
 
 
 const StyledInputBase = styled(InputBase)(({theme}) => ({
@@ -56,7 +58,7 @@ const NavBar = ({value, setValue, setError, setSearchCity, setLoad}) => {
         return (<AppBar color='default' position='sticky' style={{marginBottom: 20}}>
                 <Toolbar>
                     <Typography variant="h5" sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}>
-                        Weather App
+                        <Link to={WEATHER_LIST}> Weather App </Link>
                     </Typography>
                     <StyledInputBase placeholder="Search city…" value={value} onChange={handleChange}/>
                 </Toolbar>

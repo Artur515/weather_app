@@ -1,4 +1,3 @@
-import './App.css';
 import AppRouter from "./components/appRouter/AppRouter";
 import NavBar from "./components/navBar/NavBar";
 import {Container} from "@mui/material";
@@ -7,7 +6,7 @@ import {useEffect, useState} from "react";
 import WeatherCard from "./components/weatherCard/WeatherCard";
 import Loader from "./helpers/loader/Loader";
 import {getListOfCity} from "./reducers/weatherReducer";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
 
 const App = () => {
@@ -17,7 +16,6 @@ const App = () => {
     const [error, setError] = useState(null)
     const [load, setLoad] = useState(false)
     const listCity = JSON.parse(localStorage.getItem('cityList'))
-    const cityList = useSelector(state => state.weather.listOfCities)
     const dispatch = useDispatch()
 
 
@@ -25,10 +23,9 @@ const App = () => {
         if (listCity) {
             dispatch(getListOfCity(listCity))
         }
+        // eslint-disable-next-line
     }, [])
 
-    console.log(listCity)
-    console.log(cityList)
 
     useEffect(() => {
         setSearchCity(null)
@@ -39,14 +36,11 @@ const App = () => {
         <div>
             <NavBar value={value} setValue={setValue} setSearchCity={setSearchCity} setError={setError}
                     setLoad={setLoad}/>
-            <Container>
+            <Container sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
                 {load && <Loader props={'Search'}/>}
                 {value === '' ? <AppRouter/> :
-                    <div style={{display: 'flex', justifyContent: 'center', color: 'red'}}>
-                        {searchCity === null ?
-                            <Alert severity="error">City not found</Alert>
-                            :
-                            <WeatherCard searchCity={searchCity}/>}
+                    <div>{searchCity === null ? <Alert severity="error">City not found</Alert> :
+                        <WeatherCard setValue={setValue} searchCity={searchCity} setSearchCity={setSearchCity}/>}
                     </div>}
             </Container>
         </div>
