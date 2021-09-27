@@ -4,8 +4,9 @@ import WeatherCard from "../weatherCard/WeatherCard";
 
 
 const WeatherCardList = () => {
-    const cityList = useSelector(state => state.weather.listOfCities)
+    const cityList = useSelector(state => state.toolkitReduce.listOfCities)
 
+    // console.log(cityList)
 
     return (
         <>

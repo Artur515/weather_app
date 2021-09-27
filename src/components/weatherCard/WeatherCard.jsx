@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
@@ -6,12 +6,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useDispatch, useSelector} from "react-redux";
-import {getListOfCity, removeCity} from "../../reducers/weatherReducer";
+import {addToListOfCity, removeCity} from "../../redux/toolKitSlice";
+import {Link} from "react-router-dom";
 
 
 const WeatherCard = ({searchCity, setSearchCity, setValue, city}) => {
     const [watchCompareCity, setWatchCompareCity] = useState(false)
-    const cityList = useSelector(state => state.weather.listOfCities)
+    const cityList = useSelector(state => state.toolkitReduce.listOfCities)
     const dispatch = useDispatch()
 
 
@@ -20,40 +21,38 @@ const WeatherCard = ({searchCity, setSearchCity, setValue, city}) => {
         if (compareCity) {
             setWatchCompareCity(true)
         } else {
-            dispatch(getListOfCity([searchCity]))
-            setSearchCity(null)
+            dispatch(addToListOfCity([searchCity]))
             setValue('')
             setWatchCompareCity(false)
+            setSearchCity(null)
         }
     }
 
 
     const handleRemoveCity = (city) => {
-        // console.log(city.id)
         dispatch(removeCity(city.id))
     }
-
-    useEffect(() => {
-        localStorage.setItem('cityList', JSON.stringify(cityList))
-        // eslint-disable-next-line
-    }, [handleAddToList])
 
 
     return (
         <Card sx={{width: 300, margin: '20px'}}>
             <CardContent>
+
                 <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', pl: 1, pb: 1}}>
-                    <img
-                        src={searchCity ?
-                            `http://openweathermap.org/img/wn/${searchCity?.weather[0].icon}@2x.png` :
-                            `http://openweathermap.org/img/wn/${city?.weather[0].icon}@2x.png`}
-                        alt={searchCity?.name || city?.name}/>
+                    <Link to={`/weather/${city?.id}`}>
+                        <img
+                            src={searchCity ?
+                                `http://openweathermap.org/img/wn/${searchCity?.weather[0].icon}@2x.png` :
+                                `http://openweathermap.org/img/wn/${city?.weather[0].icon}@2x.png`}
+                            alt={searchCity?.name || city?.name}/>
+                    </Link>
                     <Typography variant="h5">
                         {searchCity?.name || city?.name || 'Name'}
                     </Typography>
                 </Box>
+
                 <Typography variant="h6">
-                    temp {searchCity?.main.temp || city?.main.temp} Сº
+                    temp {parseInt(searchCity?.main.temp) || parseInt(city?.main.temp)} Сº
                 </Typography>
                 <Typography variant="h6">
                     wet {searchCity?.main.humidity || city?.main.humidity} %
@@ -68,7 +67,7 @@ const WeatherCard = ({searchCity, setSearchCity, setValue, city}) => {
                         onClick={() => handleAddToList()}>
                     {watchCompareCity ? 'This city is on your list' : 'Add to my list'}
                 </Button>}
-                {city && <DeleteIcon onClick={() => handleRemoveCity(city)}/>}
+                {city && <DeleteIcon className='cursor' onClick={() => handleRemoveCity(city)}/>}
             </Box>
         </Card>
     )

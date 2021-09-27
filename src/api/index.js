@@ -10,18 +10,11 @@ export const getCityWeather = (queryCity) => {
 }
 
 
-// export const weatherCityAxios = (queryCity) => async dispatch => {
-//     const res = await getCityWeather(queryCity)
-//     dispatch({type: CITY_WEATHER, payload: res.data})
-// }
+export const getWeatherWithId = (id) => {
+    return axios.get(baseUrl + `weather?id=${id}&units=metric&appid=${API_KEY}`)
+}
 
 
-//
-// export const takeCustomers = () => {
-//     return dispatch => {
-//         axios.get('https://jsonplaceholder.typicode.com/users')
-//             .then(responce => responce.data)
-//             //здесь actionCreator
-//             .then(data => dispatch(getAllUsers(data)))
-//     }
-// }
+export const getOneCallApiWeather = (lat, lon) => {
+    return axios.get(baseUrl + `onecall?lat=${lat}&lon=${lon}&exclude=daily&units=metric&appid=${API_KEY}`)
+}

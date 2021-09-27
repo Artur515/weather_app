@@ -8,6 +8,8 @@ import {useDebounce} from "../../hooks/useDebounce/useDebounce";
 import {getCityWeather} from "../../api";
 import {Link} from "react-router-dom";
 import {WEATHER_LIST} from "../../utils/constants";
+import {useDispatch} from "react-redux";
+import {setFullWeatherInfo, setUpdateCurrentCity, setWeatherOfCity} from "../../redux/toolKitSlice";
 
 
 const StyledInputBase = styled(InputBase)(({theme}) => ({
@@ -31,9 +33,9 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 
 const NavBar = ({value, setValue, setError, setSearchCity, setLoad}) => {
         const debouncedSearch = useDebounce(search, 1000)
+        const dispatch = useDispatch()
 
 
-        // console.log(value)
         function search(query) {
             getCityWeather(query)
                 .then((response) => {
@@ -54,11 +56,21 @@ const NavBar = ({value, setValue, setError, setSearchCity, setLoad}) => {
             setLoad(true)
         }
 
+        const handleGoToList = () => {
+            setValue('')
+            //I don't know exactly if it is necessary or not?
+            dispatch(setFullWeatherInfo(null))
+            dispatch(setWeatherOfCity(null))
+            dispatch(setUpdateCurrentCity(null))
+        }
+
 
         return (<AppBar color='default' position='sticky' style={{marginBottom: 20}}>
                 <Toolbar>
                     <Typography variant="h5" sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}>
-                        <Link to={WEATHER_LIST}> Weather App </Link>
+                        <Link className='cursor' to={WEATHER_LIST} onClick={handleGoToList}>
+                            Weather List
+                        </Link>
                     </Typography>
                     <StyledInputBase placeholder="Search city…" value={value} onChange={handleChange}/>
                 </Toolbar>
