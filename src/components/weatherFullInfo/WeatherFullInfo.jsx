@@ -4,6 +4,9 @@ import Loader from "../../helpers/loader/Loader";
 
 import Box from "@mui/material/Box";
 import TemperatureGraph from "../temperatureGraph/TemperatureGraph";
+import CardContent from "@mui/material/CardContent";
+import CustomTypography from "./CustomTypography";
+import {countingFunction} from "../../helpers/counting/counting";
 
 
 const WeatherFullInfo = () => {
@@ -12,19 +15,19 @@ const WeatherFullInfo = () => {
     return (<>
             {fullWeatherInfo !== null ?
                 <Box>
-                    {/*<CardContent sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>*/}
-                    {/*    <CustomTypography*/}
-                    {/*        title={'Sunrise'}*/}
-                    {/*        text={countingFunction(fullWeatherInfo.current.sunrise, weatherOfCity.timezone)}*/}
-                    {/*        meaning={'am'}*/}
-                    {/*    />*/}
-                    {/*    <CustomTypography*/}
-                    {/*        title={'Sunset'}*/}
-                    {/*        text={countingFunction(fullWeatherInfo.current.sunset, weatherOfCity.timezone)}*/}
-                    {/*        meaning={'pm'}/>*/}
-                    {/*</CardContent>*/}
+                    <CardContent sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
+                        <CustomTypography
+                            title={'Sunrise'}
+                            text={countingFunction(fullWeatherInfo.city.sunrise, fullWeatherInfo.city.timezone)}
+                            meaning={'am'}
+                        />
+                        <CustomTypography
+                            title={'Sunset'}
+                            text={countingFunction(fullWeatherInfo.city.sunset, fullWeatherInfo.city.timezone)}
+                            meaning={'pm'}/>
+                    </CardContent>
                     <div style={{display: "flex", overflowX: 'scroll', maxWidth: '1000px', minHeight: '200px'}}>
-                        {fullWeatherInfo.map((hour) => {
+                        {fullWeatherInfo.list.map((hour) => {
                             return <TemperatureGraph key={hour.dt} hour={hour}/>
                         })}
                     </div>

@@ -9,12 +9,15 @@ export const getCityWeather = (queryCity) => {
     return axios.get(baseUrl + `weather?q=${queryCity}&units=metric&appid=${API_KEY}`)
 }
 
-
 export const getWeatherWithId = (id) => {
     return axios.get(baseUrl + `weather?id=${id}&units=metric&appid=${API_KEY}`)
 }
 
 
-export const getOneCallApiWeather = (lat, lon) => {
-    return axios.get(baseUrl + `onecall?lat=${lat}&lon=${lon}&exclude=daily&units=metric&appid=${API_KEY}`)
+export const getFullInfo = (id) => {
+    return axios.get(baseUrl + `forecast?id=${id}&units=metric&appid=${API_KEY}`)
 }
+
+// export const getOneCallApiWeather = (lat, lon) => {
+//     return axios.get(baseUrl + `onecall?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`)
+// }

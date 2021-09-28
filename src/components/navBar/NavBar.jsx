@@ -9,7 +9,7 @@ import {getCityWeather} from "../../api";
 import {Link} from "react-router-dom";
 import {WEATHER_LIST} from "../../utils/constants";
 import {useDispatch} from "react-redux";
-import {setFullWeatherInfo, setUpdateCurrentCity, setWeatherOfCity} from "../../redux/toolKitSlice";
+import {setFullWeatherInfo, setWeatherOfCity} from "../../redux/toolKitSlice";
 
 
 const StyledInputBase = styled(InputBase)(({theme}) => ({
@@ -61,7 +61,6 @@ const NavBar = ({value, setValue, setError, setSearchCity, setLoad}) => {
             //I don't know exactly if it is necessary or not?
             dispatch(setFullWeatherInfo(null))
             dispatch(setWeatherOfCity(null))
-            dispatch(setUpdateCurrentCity(null))
         }
 
 

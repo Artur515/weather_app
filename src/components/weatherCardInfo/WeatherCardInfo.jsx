@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getOneCallApiWeather, getWeatherWithId} from "../../api";
-import {setFullWeatherInfo, setWeatherOfCity, getError, setUpdateCurrentCity} from "../../redux/toolKitSlice";
+import {getFullInfo, getWeatherWithId} from "../../api";
+import {setWeatherOfCity, getError, setFullWeatherInfo} from "../../redux/toolKitSlice";
 import Loader from "../../helpers/loader/Loader";
 import Button from "@mui/material/Button";
 import Error from "../error/Error";
@@ -22,7 +22,6 @@ const WeatherCardInfo = () => {
     const dispatch = useDispatch()
     const weatherOfCity = useSelector(state => state.toolkitReduce.weatherOfCity)
     const fullWeatherInfo = useSelector(state => state.toolkitReduce.fullWeatherInfo)
-    const updatedWeather = useSelector(state => state.toolkitReduce.updateCurrentCity)
     const errorPage = useSelector(state => state.toolkitReduce.error)
 
 
@@ -41,9 +40,9 @@ const WeatherCardInfo = () => {
 
     const handleUpdate = () => {
         setLoad(true)
-        const {lon, lat} = weatherOfCity.coord
-        getOneCallApiWeather(lon, lat)
-            .then(response => dispatch(setUpdateCurrentCity(response.data)))
+
+        getWeatherWithId(params.id)
+            .then(response => dispatch(setWeatherOfCity(response.data)))
             .catch(error => {
                 dispatch(getError(error))
                 dispatch(setWeatherOfCity(null))
@@ -52,11 +51,9 @@ const WeatherCardInfo = () => {
 
 
     const handleFullInfo = () => {
-        const {lon, lat} = weatherOfCity.coord
-        getOneCallApiWeather(lon, lat)
+        getFullInfo(params.id)
             .then(response => {
-                dispatch(setUpdateCurrentCity(response.data))
-                dispatch(setFullWeatherInfo(response.data.hourly))
+                dispatch(setFullWeatherInfo(response.data))
             })
             .catch(error => {
                 dispatch(getError(error))
@@ -73,28 +70,23 @@ const WeatherCardInfo = () => {
                 <Card sx={{padding: '15px'}}>
                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                         <CardMedia
-                            component="img" sx={{width: 150}} src={updatedWeather ?
-                            `http://openweathermap.org/img/wn/${updatedWeather?.current.weather[0].icon}@2x.png` :
-                            `http://openweathermap.org/img/wn/${weatherOfCity?.weather[0].icon}@2x.png`}
-                            alt={weatherOfCity.name || weatherOfCity.current.weather[0].description}/>
+                            component="img" sx={{width: 150}}
+                            src={`http://openweathermap.org/img/wn/${weatherOfCity?.weather[0].icon}@2x.png`}
+                            alt={weatherOfCity?.weather[0].description}/>
                         <Typography gutterBottom variant="h5" component="div">
-                            {weatherOfCity.name}
+                            {weatherOfCity?.name}
                         </Typography>
                         <UpdateIcon className='cursor' onClick={handleUpdate}/>
                     </Box>
                     <CardContent sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                         <CustomTypography title={'Temperature'}
-                                          text={parseInt(updatedWeather ? updatedWeather?.current.temp :
-                                              weatherOfCity.main?.temp)} meaning={' Сº'}/>
+                                          text={parseInt(weatherOfCity?.main.temp)} meaning={' Сº'}/>
                         <CustomTypography title={'Wet'}
-                                          text={updatedWeather ? updatedWeather.current?.humidity :
-                                              weatherOfCity.main?.humidity} meaning={'%'}/>
+                                          text={weatherOfCity?.main.humidity} meaning={'%'}/>
                         <CustomTypography title={'Wind'}
-                                          text={updatedWeather ? updatedWeather.current.wind_speed :
-                                              weatherOfCity.wind?.speed} meaning={'km/h'}/>
+                                          text={weatherOfCity?.wind.speed} meaning={'km/h'}/>
                         <CustomTypography title={'Clouds'}
-                                          text={updatedWeather ? updatedWeather.current?.clouds :
-                                              weatherOfCity.clouds?.all} meaning={'%'}/>
+                                          text={weatherOfCity?.clouds.all} meaning={'%'}/>
                     </CardContent>
                     <CardContent>
                         {fullWeatherInfo && <WeatherFullInfo/>}

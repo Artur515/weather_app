@@ -6,7 +6,6 @@ const toolKitSlice = createSlice({
         listOfCities: [],
         weatherOfCity: null,
         fullWeatherInfo: null,
-        updateCurrentCity: null,
         error: null
     },
     reducers: {
@@ -23,9 +22,6 @@ const toolKitSlice = createSlice({
         setFullWeatherInfo(state, action) {
             state.fullWeatherInfo = action.payload
         },
-        setUpdateCurrentCity(state, action) {
-            state.updateCurrentCity = action.payload
-        },
         getError(state, action) {
             state.error = action.payload
         }
@@ -38,6 +34,5 @@ export const {
     removeCity,
     setWeatherOfCity,
     setFullWeatherInfo,
-    setUpdateCurrentCity,
     getError
 } = toolKitSlice.actions
