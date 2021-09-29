@@ -18,15 +18,18 @@ const WeatherFullInfo = () => {
                     <CardContent sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                         <CustomTypography
                             title={'Sunrise'}
-                            text={countingFunction(fullWeatherInfo.city.sunrise, fullWeatherInfo.city.timezone)}
-                            meaning={'am'}
-                        />
+                            text={countingFunction(fullWeatherInfo.city.sunrise, fullWeatherInfo.city.timezone)}/>
                         <CustomTypography
                             title={'Sunset'}
-                            text={countingFunction(fullWeatherInfo.city.sunset, fullWeatherInfo.city.timezone)}
-                            meaning={'pm'}/>
+                            text={countingFunction(fullWeatherInfo.city.sunset, fullWeatherInfo.city.timezone)}/>
                     </CardContent>
-                    <div style={{display: "flex", overflowX: 'scroll', maxWidth: '1000px', minHeight: '200px'}}>
+                    <div style={{
+                        display: "flex",
+                        alignItems: 'center',
+                        overflowX: 'scroll',
+                        maxWidth: '1000px',
+                        minHeight: '200px'
+                    }}>
                         {fullWeatherInfo.list.map((hour) => {
                             return <TemperatureGraph key={hour.dt} hour={hour}/>
                         })}

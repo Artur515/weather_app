@@ -51,6 +51,7 @@ const WeatherCardInfo = () => {
 
 
     const handleFullInfo = () => {
+        setLoad(true)
         getFullInfo(params.id)
             .then(response => {
                 dispatch(setFullWeatherInfo(response.data))
@@ -58,7 +59,7 @@ const WeatherCardInfo = () => {
             .catch(error => {
                 dispatch(getError(error))
                 dispatch(setWeatherOfCity(null))
-            })
+            }).finally(() => setLoad(false))
     }
 
 
@@ -81,6 +82,10 @@ const WeatherCardInfo = () => {
                     <CardContent sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                         <CustomTypography title={'Temperature'}
                                           text={parseInt(weatherOfCity?.main.temp)} meaning={' Сº'}/>
+                        <CustomTypography title={'Min'}
+                                          text={parseInt(weatherOfCity?.main.temp_min)} meaning={' Сº'}/>
+                        <CustomTypography title={'Max'}
+                                          text={parseInt(weatherOfCity?.main.temp_max)} meaning={' Сº'}/>
                         <CustomTypography title={'Wet'}
                                           text={weatherOfCity?.main.humidity} meaning={'%'}/>
                         <CustomTypography title={'Wind'}
